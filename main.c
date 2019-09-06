@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
+#include <assert.h>
 
 int main(int argc, char **argv)
 {
   SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
+  assert(0 == atexit(SDL_Quit));
 
   /* Open the first available controller. */
   SDL_GameController *controller = NULL;
@@ -17,18 +19,17 @@ int main(int argc, char **argv)
   }
   if (controller == NULL) {
     fprintf(stderr, "Failed to open game controller.\n");
-    SDL_Quit();
-    return 1;
+    exit(1);
   }
 
   SDL_Event e;
   while (SDL_WaitEvent(&e)) {
     switch (e.type) {
     case SDL_QUIT:
-      goto quit;
+      exit(0);
       break;
     case SDL_CONTROLLERBUTTONDOWN:
-      printf("button %i pressed\n", e.cbutton.button);
+      printf("%i\t%i\n", e.cbutton.button, e.cbutton.timestamp);
       if (e.cbutton.button == 3) {
         system("./clickscript.sh");
       }
@@ -45,7 +46,5 @@ int main(int argc, char **argv)
     }
   }
 
- quit:
-  SDL_Quit();
-  return 0;
+  exit(0);
 }
