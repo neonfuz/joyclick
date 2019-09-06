@@ -1,10 +1,17 @@
 #include <SDL2/SDL.h>
 #include <assert.h>
 
+#include "mousepos.h"
+
+MousePos pos = { 0 };
+
 int main(int argc, char **argv)
 {
   SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
   assert(0 == atexit(SDL_Quit));
+
+  pos = getMousePos();
+  printMousePos(pos);
 
   /* Open the first available controller. */
   SDL_GameController *controller = NULL;
