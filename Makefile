@@ -1,2 +1,2 @@
-whenpress: *.c
-	$(CC) -o whenpress $^ `sdl2-config --cflags --libs`
+joyclick: *.c
+	$(CC) -o joyclick $^ `sdl2-config --cflags --libs`
