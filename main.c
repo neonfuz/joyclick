@@ -4,14 +4,12 @@
 #include "mousepos.h"
 
 MousePos pos = { 0 };
+int button;
 
 int main(int argc, char **argv)
 {
   SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
   assert(0 == atexit(SDL_Quit));
-
-  pos = getMousePos();
-  printMousePos(pos);
 
   /* Open the first available controller. */
   SDL_GameController *controller = NULL;
@@ -29,6 +27,8 @@ int main(int argc, char **argv)
     exit(1);
   }
 
+  printf("Position mouse and press desired button...\n");
+
   SDL_Event e;
   while (SDL_WaitEvent(&e)) {
     switch (e.type) {
@@ -36,9 +36,25 @@ int main(int argc, char **argv)
       exit(0);
       break;
     case SDL_CONTROLLERBUTTONDOWN:
+      button = e.cbutton.button;
+      printf("button:%i ", button);
+      pos = getMousePos();
+      printMousePos(pos);
+      goto mainloop;
+    }
+  }
+
+ mainloop:
+  while (SDL_WaitEvent(&e)) {
+    switch (e.type) {
+    case SDL_QUIT:
+      exit(0);
+      break;
+    case SDL_CONTROLLERBUTTONDOWN:
       printf("%i\t%i\n", e.cbutton.button, e.cbutton.timestamp);
-      if (e.cbutton.button == 3) {
-        system("./clickscript.sh");
+      if (e.cbutton.button == button) {
+        setMousePos(pos);
+        click();
       }
       break;
     case SDL_JOYAXISMOTION:

@@ -25,6 +25,28 @@ MousePos getMousePos(void) {
   return pos;
 }
 
+void setMousePos(MousePos pos) {
+  char buf[256];
+  int i = 0;
+
+  i += snprintf(buf+i, 256-i, "xdotool mousemove ");
+  if (pos.use_screen)
+    i += snprintf(buf+i, 256-i, "--screen %i ", pos.screen);
+  if (pos.use_window)
+    i += snprintf(buf+i, 256-i, "--window %i ", pos.window);
+  i += snprintf(buf+i, 256-i, "%i %i", pos.x, pos.y);
+
+  int ret = system(buf);
+  if (ret)
+    printf("ret value: %i\n", ret);
+}
+
+void click(void) {
+  int ret = system("xdotool click 1");
+  if (ret)
+    printf("ret value: %i\n", ret);
+}
+
 void printMousePos(MousePos pos) {
   printf("x: %i y:%i", pos.x, pos.y);
   if (pos.use_screen)

@@ -4,4 +4,6 @@ typedef struct {
 } MousePos;
 
 MousePos getMousePos(void);
+void setMousePos(MousePos pos);
+void click(void);
 void printMousePos(MousePos pos);
