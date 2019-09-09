@@ -3,6 +3,28 @@
 #include <assert.h>
 #include "mousepos.h"
 
+MousePos getWindowGeometry(int window) {
+  MousePos pos = { 0 };
+  char buf[256];
+  int i = 0;
+
+  i += snprintf(buf+i, 256-i, "xdotool getwindowgeometry %i", window);
+  FILE *fp = popen(buf, "r");
+  if (fp == NULL) {
+    fprintf(stderr, "failed to execute xdotool\n");
+    exit(1);
+  }
+
+  // TODO improve this
+  while (fgetc(fp) != '\n');
+
+  int scanned = fscanf(fp, "  Position: %i,%i", &pos.x, &pos.y);
+  assert(scanned == 2);
+  fclose(fp);
+
+  return pos;
+}
+
 MousePos getMousePos(void) {
   MousePos pos = { 0 };
   FILE *fp;
@@ -23,6 +45,11 @@ MousePos getMousePos(void) {
 
   pos.use_screen = 1;
   pos.use_window = 0;
+
+  MousePos win = getWindowGeometry(pos.window);
+  pos.x -= win.x;
+  pos.y -= win.y;
+  pos.use_window = 1;
 
   return pos;
 }

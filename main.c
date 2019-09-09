@@ -54,10 +54,8 @@ int main(int argc, char **argv)
       printf("%i\t%i\n", e.cbutton.button, e.cbutton.timestamp);
       if (e.cbutton.button == button) {
         MousePos prev = getMousePos();
-        printMousePos(prev);
         setMousePos(pos);
         click();
-        setMousePos(prev);
         setMousePos(prev);
       }
       break;

@@ -4,6 +4,7 @@ typedef struct {
 } MousePos;
 
 MousePos getMousePos(void);
+MousePos getWindowGeometry(int window);
 void setMousePos(MousePos pos);
 void click(void);
 void printMousePos(MousePos pos);
