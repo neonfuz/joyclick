@@ -3,12 +3,15 @@
 #include <assert.h>
 #include "mousepos.h"
 
+// String format
+#define format(name, ...)                       \
+  alloca(snprintf(NULL, 0, __VA_ARGS__));       \
+  sprintf(name, __VA_ARGS__);
+
 MousePos getWindowGeometry(int window) {
   MousePos pos = { 0 };
-  char buf[256];
-  int i = 0;
 
-  i += snprintf(buf+i, 256-i, "xdotool getwindowgeometry %i", window);
+  char *buf = format(buf, "xdotool getwindowgeometry %i", window);
   FILE *fp = popen(buf, "r");
   if (fp == NULL) {
     fprintf(stderr, "failed to execute xdotool\n");
