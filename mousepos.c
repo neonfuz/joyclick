@@ -6,7 +6,7 @@
 // String format
 #define format(name, ...)                       \
   alloca(snprintf(NULL, 0, __VA_ARGS__));       \
-  sprintf(name, __VA_ARGS__);
+  sprintf(name, __VA_ARGS__)
 
 MousePos getWindowGeometry(int window) {
   MousePos pos = { 0 };
@@ -58,15 +58,17 @@ MousePos getMousePos(void) {
 }
 
 void setMousePos(MousePos pos) {
-  char buf[256];
-  int i = 0;
+  char *screenpart = "";
+  char *windowpart = "";
 
-  i += snprintf(buf+i, 256-i, "xdotool mousemove ");
-  if (pos.use_screen)
-    i += snprintf(buf+i, 256-i, "--screen %i ", pos.screen);
-  if (pos.use_window)
-    i += snprintf(buf+i, 256-i, "--window %i ", pos.window);
-  i += snprintf(buf+i, 256-i, "%i %i", pos.x, pos.y);
+  if (pos.use_screen) {
+    screenpart = format(screenpart, " --screen %i", pos.screen);
+  }
+  if (pos.use_window) {
+    windowpart = format(windowpart, " --window %i", pos.window);
+  }
+
+  char *buf = format(buf, "xdotool mousemove%s%s %i %i", screenpart, windowpart, pos.x, pos.y);
 
   int ret = system(buf);
   if (ret)
