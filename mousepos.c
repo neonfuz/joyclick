@@ -21,7 +21,8 @@ MousePos getMousePos(void) {
   assert(scanned == 4);
   pclose(fp);
 
-  pos.use_screen = pos.use_window = 1;
+  pos.use_screen = 1;
+  pos.use_window = 0;
 
   return pos;
 }
