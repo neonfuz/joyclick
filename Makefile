@@ -1,9 +1,10 @@
-all: joyclick
+all: bin/joyclick
 
 clean:
-	rm joyclick
+	rm bin/joyclick
 
-joyclick: *.c
-	$(CC) -o joyclick $^ `sdl2-config --cflags --libs`
+bin/joyclick: src/*.c
+	mkdir -p ./bin
+	$(CC) -o bin/joyclick $^ `sdl2-config --cflags --libs`
 
 .PHONY: all clean
