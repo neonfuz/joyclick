@@ -1,18 +1,12 @@
 #include <SDL2/SDL.h>
-#include <string.h>
 #include <assert.h>
 #include "mousepos.h"
-
-// String format
-#define format(name, ...)                       \
-  alloca(snprintf(NULL, 0, __VA_ARGS__));       \
-  sprintf(name, __VA_ARGS__)
+#include "util.h"
 
 MousePos getWindowGeometry(int window) {
   MousePos pos = { 0 };
 
-  char *buf = format(buf, "xdotool getwindowgeometry %i", window);
-  FILE *fp = popen(buf, "r");
+  FILE *fp = popenf("r", "xdotool getwindowgeometry %i", window);
   if (fp == NULL) {
     fprintf(stderr, "failed to execute xdotool\n");
     exit(1);
@@ -58,21 +52,18 @@ MousePos getMousePos(void) {
 }
 
 void setMousePos(MousePos pos) {
-  char *screenpart = "";
-  char *windowpart = "";
+  char *screenpart = NULL;
+  char *windowpart = NULL;
 
-  if (pos.use_screen) {
-    screenpart = format(screenpart, " --screen %i", pos.screen);
-  }
-  if (pos.use_window) {
-    windowpart = format(windowpart, " --window %i", pos.window);
-  }
+  if (pos.use_screen)
+    screenpart = format(" --screen %i", pos.screen);
+  if (pos.use_window)
+    windowpart = format(" --window %i", pos.window);
 
-  char *buf = format(buf, "xdotool mousemove%s%s %i %i", screenpart, windowpart, pos.x, pos.y);
+  systemf("xdotool mousemove%s%s %i %i", screenpart, windowpart, pos.x, pos.y);
 
-  int ret = system(buf);
-  if (ret)
-    printf("ret value: %i\n", ret);
+  free(screenpart);
+  free(windowpart);
 }
 
 void click(void) {
