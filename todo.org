@@ -7,7 +7,7 @@
 ** Hotplug and multiple controllers
 ** GUI
 ** OS portability
-
+** Proper nix package rather than simple shell.nix
 * Frontlog
 ** NEXT chord support
 ** TODO multiple locations support
