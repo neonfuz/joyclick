@@ -6,29 +6,8 @@
 MousePos pos = { 0 };
 int button;
 
-int main(int argc, char **argv)
+void read_pos_and_button()
 {
-  SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
-  assert(0 == atexit(SDL_Quit));
-
-  /* Open the first available controller. */
-  SDL_GameController *controller = NULL;
-  for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-    if (SDL_IsGameController(i)) {
-      controller = SDL_GameControllerOpen(i);
-      if (controller) {
-        printf("Opened controller %i\n", i);
-        break;
-      }
-    }
-  }
-  if (controller == NULL) {
-    fprintf(stderr, "Failed to open game controller.\n");
-    exit(1);
-  }
-
-  printf("Position mouse and press desired button...\n");
-
   SDL_Event e;
   while (SDL_WaitEvent(&e)) {
     switch (e.type) {
@@ -40,11 +19,13 @@ int main(int argc, char **argv)
       printf("button:%i ", button);
       pos = getMousePos();
       printMousePos(pos);
-      goto mainloop;
+      return;
     }
   }
+}
 
- mainloop:
+void mainloop()
+{
   while (SDL_WaitEvent(&e)) {
     switch (e.type) {
     case SDL_QUIT:
@@ -70,6 +51,33 @@ int main(int argc, char **argv)
       break;
     }
   }
+}
+
+int main(int argc, char **argv)
+{
+  SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
+  assert(0 == atexit(SDL_Quit));
+
+  /* Open the first available controller. */
+  SDL_GameController *controller = NULL;
+  for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+    if (SDL_IsGameController(i)) {
+      controller = SDL_GameControllerOpen(i);
+      if (controller) {
+        printf("Opened controller %i\n", i);
+        break;
+      }
+    }
+  }
+  if (controller == NULL) {
+    fprintf(stderr, "Failed to open game controller.\n");
+    exit(1);
+  }
+
+  printf("Position mouse and press desired button...\n");
+  read_pos_and_button();
+
+  mainloop();
 
   exit(0);
 }

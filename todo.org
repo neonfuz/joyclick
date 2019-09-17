@@ -9,6 +9,6 @@
 ** OS portability
 
 * Frontlog
-** TODO chord support
+** NEXT chord support
 ** TODO multiple locations support
 ** TODO command line configuration
