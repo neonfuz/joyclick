@@ -1,0 +1,9 @@
+* Ideas
+** Multiple keys / chords for click locations
+** Saved configuration
+** Command line configuration
+** Saved mouse locations, with window detection
+** integrate xdotools at c level
+** Hotplug and multiple controllers
+** GUI
+** OS portability
