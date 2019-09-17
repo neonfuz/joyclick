@@ -7,3 +7,8 @@
 ** Hotplug and multiple controllers
 ** GUI
 ** OS portability
+
+* Frontlog
+** TODO chord support
+** TODO multiple locations support
+** TODO command line configuration
