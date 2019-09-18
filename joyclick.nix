@@ -1,16 +1,10 @@
-{ stdenv, fetchFromGitHub, makeWrapper, SDL2, xdotool }:
+{ stdenv, makeWrapper, SDL2, xdotool }:
 
 stdenv.mkDerivation rec {
   pname = "joyclick";
   version = "0.1";
 
   src = ./.;
-#  fetchFromGitHub {
-#    owner = "neonfuz";
-#    repo = "joyclick";
-#    rev = "6a9cc28f1e718dff008cc73c56dde12c589c28b2";
-#    sha256 = "0jj67yp00y8mnxys37xb39dq442k3xsxm2nd67vvggq0k8rqp2p2";
-#  };
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -29,7 +23,6 @@ stdenv.mkDerivation rec {
       button presses.
     '';
     homepage = https://github.com/neonfuz/joyclick;
-#    license =
     maintainers = [ maintainers.neonfuz ];
     platforms = platforms.linux;
   };
