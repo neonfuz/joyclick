@@ -9,6 +9,7 @@
 ** OS portability
 ** Proper nix package rather than simple shell.nix
 * Frontlog
-** NEXT chord support
+** NEXT Nix package
+** TODO chord support
 ** TODO multiple locations support
 ** TODO command line configuration
